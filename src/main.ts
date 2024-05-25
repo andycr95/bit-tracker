@@ -1,7 +1,13 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
+import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
+import { AppComponent } from './app/app.component';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { initDatabase } from './app/exchange/services/db.service';
 
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(BrowserModule),
+    { provide: APP_INITIALIZER, useFactory: () => initDatabase(), multi: true },
+  ],
+}).catch((err) => console.error(err));
