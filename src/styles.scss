@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  top: 0;
+  margin: 0;
+  background-color: #f8f8f8;
+  height: 100%;
+  width: 100%;
+}

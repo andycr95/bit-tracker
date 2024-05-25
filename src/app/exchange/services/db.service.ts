@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { createRxDatabase } from 'rxdb';
+import { addRxPlugin, createRxDatabase } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { EXCHANGE_SCHEMA } from '../models/exchange.model';
 import { RxBitTrackerDatabase } from 'src/RxDB';
+import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
+addRxPlugin(RxDBJsonDumpPlugin);
 
 async function createDatabase(): Promise<any> {
   const db = await createRxDatabase<any>({
@@ -10,19 +12,14 @@ async function createDatabase(): Promise<any> {
     storage: getRxStorageDexie(),
   });
 
-  await db.collection({
+  await db.addCollections({
     exchange: {
       schema: EXCHANGE_SCHEMA,
     },
   });
 
-  const test = await db.exchange.insert({
-    key: 'test',
-    value: 'test',
-  });
-
   const myCollection = db.exchange;
-  myCollection.expotJSON().then((json: any) => console.dir(json));
+  myCollection.exportJSON().then((json: any) => console.dir(json));
 
   return db;
 }

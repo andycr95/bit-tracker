@@ -8,6 +8,10 @@ import { initDatabase } from './app/exchange/services/db.service';
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(BrowserModule),
-    { provide: APP_INITIALIZER, useFactory: () => initDatabase(), multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => initDatabase,
+      multi: true,
+    },
   ],
 }).catch((err) => console.error(err));
