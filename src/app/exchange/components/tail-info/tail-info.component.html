@@ -1,0 +1,12 @@
+<a routerLink="/detail">
+    <div class="h-[88px] w-full flex flex-row px-4 border-b hover:bg-slate-300 transition">
+        <div class="w-1/2 h-full flex items-start justify-center flex-col">
+            <h1 class="text-slate-800 text-md"><strong>{{tail.value | jsonToString}} </strong>USD</h1>
+            <span class="text-slate-800 text-sm">{{tail.date | date: 'medium'}}</span>
+        </div>
+        <div class="w-1/2 h-full flex items-center justify-end">
+            <h3 [ngClass]="(isTodayValueHigher$ | async) ? 'text-red-400' : 'text-green-400 ' " class="text-md">
+                {{tailDifference$ | async}}%</h3>
+        </div>
+    </div>
+</a>

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExchangeComponent } from './exchange.component';
+import { ListTailComponent } from './list-tail.component';
 
-describe('ExchangeComponent', () => {
-  let component: ExchangeComponent;
-  let fixture: ComponentFixture<ExchangeComponent>;
+describe('ListTailComponent', () => {
+  let component: ListTailComponent;
+  let fixture: ComponentFixture<ListTailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ExchangeComponent]
+      imports: [ListTailComponent]
     });
-    fixture = TestBed.createComponent(ExchangeComponent);
+    fixture = TestBed.createComponent(ListTailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,10 @@
+<div class="w-full">
+    <div class="pt-5 px-4">
+        <h1 class="text-slate-800 text-3xl font-bold">Historial</h1>
+    </div>
+    <div class="flex flex-col w-full">
+        <div *ngFor="let rate of rates$ | async | json | getArray">
+            <app-tail-info [tail]="rate"></app-tail-info>
+        </div>
+    </div>
+</div>

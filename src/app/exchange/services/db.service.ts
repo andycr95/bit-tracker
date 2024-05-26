@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { addRxPlugin, createRxDatabase } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { EXCHANGE_SCHEMA } from '../models/exchange.model';
-import { RxBitTrackerDatabase } from 'src/RxDB';
+
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
+import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
+addRxPlugin(RxDBQueryBuilderPlugin);
 addRxPlugin(RxDBJsonDumpPlugin);
 
 async function createDatabase(): Promise<any> {
@@ -17,9 +19,6 @@ async function createDatabase(): Promise<any> {
       schema: EXCHANGE_SCHEMA,
     },
   });
-
-  const myCollection = db.exchange;
-  myCollection.exportJSON().then((json: any) => console.dir(json));
 
   return db;
 }
@@ -40,7 +39,69 @@ export async function initDatabase() {
   providedIn: 'root',
 })
 export class DbService {
-  get db(): RxBitTrackerDatabase {
+  get db() {
     return DB_INSTANCE;
+  }
+
+  saveExchangeRateToday(exchangeRate: number): void {
+    this.db.exchange
+      .findOne({
+        selector: {
+          key: 'todayNow',
+        },
+      })
+      .exec()
+      .then((docs: any) => {
+        if (docs === null) {
+          this.db.exchange.insert({
+            value: exchangeRate.toString(),
+            key: 'todayNow',
+          });
+          this.db.exchange.insert({
+            value: exchangeRate.toString(),
+            key: 'todayLast',
+          });
+        } else {
+          if (docs.value !== exchangeRate.toString()) {
+            this.db.exchange.upsert({
+              value: docs.value,
+              key: 'todayLast',
+            });
+            this.db.exchange.upsert({
+              value: exchangeRate.toString(),
+              key: 'todayNow',
+            });
+          }
+        }
+      });
+  }
+
+  saveExchangeRateHistory(exchangeRateH: number): void {
+    this.db.exchange
+      .findOne({
+        selector: {
+          key: 'history',
+        },
+      })
+      .exec()
+      .then((docs: any) => {
+        if (docs === null) {
+          this.db.exchange.insert({
+            value: exchangeRateH,
+            key: 'history',
+          });
+        } else {
+          if (docs.value !== exchangeRateH) {
+            this.db.exchange.upsert({
+              value: exchangeRateH,
+              key: 'history',
+            });
+          }
+        }
+      });
+  }
+
+  getQuery(query: string): any {
+    return this.db.exchange.findOne().where('key').eq(query).$.pipe();
   }
 }
