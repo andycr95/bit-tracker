@@ -1,1 +1,36 @@
-<p>datail works!</p>
+<div class="flex flex-col h-[100vh] w-full scroll-smooth">
+    <app-nav-bar>
+        <div [ngClass]="(classContent$ | async)! > 250 ? 'flex-row' : 'flex-col'"
+            class="h-full flex w-full flex-col justify-start">
+            <div [ngClass]="(classContent$ | async)! > 250 ? '' : 'w-full flex-1'" class="h-6 pl-5">
+                <a routerLink="/" class="text-slate-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </a>
+            </div>
+            <div class="w-full flex items-center flex-col justify-center h-full">
+                <h1 [ngClass]="(classContent$ | async)! > 250 ? 'text-xl' : 'text-3xl'"
+                    class="text-slate-700 transition-all">
+                    <strong>{{rate.value | currency}}</strong>
+                </h1>
+                <h3 class="text-md">BitCoin - {{rate.date | date: 'medium' }}</h3>
+            </div>
+        </div>
+    </app-nav-bar>
+    <div class="flex flex-col w-full h-2/3 mt-64">
+        <div *ngFor="let item of changeCurrencies">
+            <div class="h-[88px] w-full flex flex-row px-4 border-b hover:bg-slate-300 transition">
+                <div class="w-1/2 h-full flex items-start justify-center flex-col">
+                    <h1 class="text-slate-700 text-md font-bold">{{item.currency}}</h1>
+                    <span class="text-slate-700 text-sm">{{item.value | currency: item.currency}} * US</span>
+                </div>
+                <div class="w-1/2 h-full flex items-center justify-end">
+                    <h3 class="text-md">{{item.value * rate.value | currency: item.currency}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

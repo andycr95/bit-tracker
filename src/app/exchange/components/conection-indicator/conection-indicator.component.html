@@ -1,0 +1,4 @@
+<div [ngClass]="(onlineStatus$ | async) ? 'flex animate-pulse' : 'hidden'"
+    class="absolute bg-red-500 h-5 top-0 left-0 w-full z-10 text-white justify-center transition-all">Sin
+    conexión
+</div>

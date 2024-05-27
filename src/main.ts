@@ -1,11 +1,5 @@
-import {
-  APP_INITIALIZER,
-  Component,
-  importProvidersFrom,
-  LOCALE_ID,
-} from '@angular/core';
+import { Component, importProvidersFrom, LOCALE_ID } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { initDatabase } from './app/exchange/services/db.service';
 import { HttpClientModule } from '@angular/common/http';
 import { JsonToStringPipe } from './app/exchange/pipes/jsonToString.pipe';
 import localeES from '@angular/common/locales/es';
@@ -16,7 +10,7 @@ import { routes } from './routes';
 
 @Component({
   selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
+  template: `<router-outlet></router-outlet>`,
   standalone: true,
   imports: [RouterOutlet],
 })
@@ -25,11 +19,6 @@ export class App {}
 bootstrapApplication(App, {
   providers: [
     importProvidersFrom([BrowserModule, HttpClientModule, JsonToStringPipe]),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => initDatabase,
-      multi: true,
-    },
     {
       provide: LOCALE_ID,
       useValue: 'es',

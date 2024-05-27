@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class JsonToStringPipe implements PipeTransform {
   transform(value: any): string {
+    if (value === null) return '0';
     let item = JSON.parse(value);
     let number = item?.value ? Number(item?.value) : Number(item);
     return new Intl.NumberFormat('en-US', {

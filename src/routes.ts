@@ -9,7 +9,7 @@ export const routes: Route[] = [
     component: HomeComponent,
   },
   {
-    path: 'detail',
+    path: ':id',
     component: DatailComponent,
   },
   {

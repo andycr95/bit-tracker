@@ -1,7 +1,7 @@
 {
   "name": "bit-tracker",
   "version": "0.0.0",
-  "main": "app.js",
+  "main": "electron/app.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
