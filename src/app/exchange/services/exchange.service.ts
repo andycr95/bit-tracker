@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DbService } from './db.service';
-import { HttpClient } from '@angular/common/http';
-import { timeInterval, interval, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SharedService } from './shared.service';
 
 @Injectable({
@@ -9,67 +8,12 @@ import { SharedService } from './shared.service';
 })
 export class ExchangeService {
   readonly URL_API = `https://api.coindesk.com/v2`;
-  private seconds = interval(10000);
   conection$!: Observable<boolean>;
   constructor(
-    private http: HttpClient,
     private dbService: DbService,
     private sharedService: SharedService
   ) {
     this.conection$ = this.sharedService.getConectionStatus();
-  }
-
-  public getTodayValue(): void {
-    this.getExchangeRate();
-    this.seconds
-      .pipe(timeInterval())
-      .subscribe((value) => this.getExchangeRate());
-  }
-
-  getExchangeRate(): void {
-    this.conection$.subscribe((status) => {
-      if (status == false) return;
-      this.http
-        .get(`${this.URL_API}/tb/price/ticker?assets=BTC`)
-        .subscribe((data: any) => {
-          const exchangeRate = data.data.BTC.ohlc.c;
-          this.dbService.saveExchangeRateToday(exchangeRate);
-        });
-    });
-  }
-
-  getHistoricalValue(start: string, end: string): void {
-    this.conection$.subscribe((status) => {
-      if (status == false) return;
-      this.http
-        .get(
-          `${this.URL_API}/tb/price/values/BTC?start_date=${start}&end_date=${end}&interval=1d`
-        )
-        .subscribe((data: any) => {
-          const exchangeRateH = data.data.entries;
-          this.dbService.saveExchangeRateHistory(exchangeRateH);
-          this.saveChangeCurrencies(exchangeRateH);
-        });
-    });
-  }
-
-  saveChangeCurrencies(exchangeRateH: any): void {
-    this.conection$.subscribe((status) => {
-      if (status == false) return;
-      this.http
-        .get(`https://api.currencyapi.com/v3/latest`, {
-          headers: {
-            apikey: 'cur_live_7rofLFDIDyeh3bY5Dd2U3sp7P1CAxtOpJaot8wME',
-          },
-        })
-        .subscribe((data: any) => {
-          this.dbService.saveChangeCurrencies(data.data);
-          for (let i = 0; i < exchangeRateH.length; i++) {
-            const eRH = exchangeRateH[i];
-            this.dbService.saveSingleExchangeRateHistory(eRH);
-          }
-        });
-    });
   }
 
   getChangeCurrencies(): any {

@@ -7,6 +7,13 @@ import { registerLocaleData } from '@angular/common';
 import { RouterOutlet, provideRouter } from '@angular/router';
 registerLocaleData(localeES, 'es');
 import { routes } from './routes';
+import { RxDatabase } from 'rxdb';
+
+declare global {
+  interface Window {
+    dbInstance: RxDatabase;
+  }
+}
 
 @Component({
   selector: 'app-root',

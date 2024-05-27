@@ -14,7 +14,18 @@ import { GetArrayPipe } from '../../pipes/getArray.pipe';
 })
 export class ListTailComponent {
   public rates$!: Observable<any>;
+  public stateDB$!: Observable<boolean>;
   constructor(private dbService: DbService) {
+    window.addEventListener('dbInstanceReady', () => {
+      this.getRates();
+    });
+  }
+
+  ngOnInit() {
+    this.getRates();
+  }
+
+  getRates() {
     this.rates$ = this.dbService.getQuery('history').pipe();
   }
 }

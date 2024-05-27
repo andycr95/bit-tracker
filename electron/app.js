@@ -1,5 +1,4 @@
 const { app, BrowserWindow, screen, ipcMain } = require("electron");
-const initDatabase = require("./database/config.js");
 const { getRxStorageMemory } = require("rxdb/plugins/storage-memory");
 const { exposeIpcMainRxStorage } = require("rxdb/plugins/electron");
 
@@ -16,6 +15,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true,
     },
   });
 
@@ -38,7 +38,6 @@ app.on("ready", async () => {
     ipcMain: ipcMain,
   });
 
-  await initDatabase(storage);
   createWindow();
 });
 
@@ -46,8 +45,4 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
-});
-
-ipcMain.on("ping", () => {
-  console.log("pong");
 });

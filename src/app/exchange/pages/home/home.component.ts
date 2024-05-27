@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from '../../components/nav-bar/nav-bar.component';
 import { ListTailComponent } from '../../components/list-tail/list-tail.component';
-import { ExchangeService } from '../../services/exchange.service';
 import { DbService } from '../../services/db.service';
 import { Observable } from 'rxjs';
 import { JsonToStringPipe } from '../../pipes/jsonToString.pipe';
@@ -24,34 +23,39 @@ import { ConectionIndicatorComponent } from '../../components/conection-indicato
 })
 export class HomeComponent {
   public classContent$!: Observable<number>;
+  public isTodayValueHigher$!: Observable<boolean>;
+  public window$!: Observable<any>;
+  public stateDB$!: Observable<any>;
   public todayValue$!: Observable<any>;
   public todayValueLast$!: Observable<any>;
-  public isTodayValueHigher$: Observable<boolean>;
 
   constructor(
-    private exchangeService: ExchangeService,
-    private dbService: DbService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private dbService: DbService
   ) {
+    window.addEventListener('rateTodayUpdated', (e: any) => {
+      if (!e.detail) return;
+      this.getInformation();
+    });
+    window.addEventListener('dbInstanceReady', (e: any) => {
+      this.getInformation();
+    });
+  }
+
+  async getInformation() {
     this.todayValue$ = this.dbService.getQuery('todayNow').pipe();
     this.todayValueLast$ = this.dbService.getQuery('todayLast').pipe();
     this.classContent$ = this.sharedService.getScrollPercentage();
     this.isTodayValueHigher$ = new Observable((observer) => {
       this.todayValue$.subscribe((todayValue) => {
-        this.todayValueLast$.subscribe((todayValueLast) => {
-          if (todayValue && todayValueLast) {
-            observer.next(todayValue.value > todayValueLast.value);
-          }
-        });
+        if (todayValue) {
+          this.todayValueLast$.subscribe((todayValueLast) => {
+            if (todayValueLast) {
+              observer.next(todayValue.value > todayValueLast.value);
+            }
+          });
+        }
       });
     });
-  }
-
-  ngOnInit(): void {
-    this.exchangeService.getTodayValue();
-    this.exchangeService.getHistoricalValue(
-      '2024-05-10T01:25',
-      '2024-05-25T01:25'
-    );
   }
 }

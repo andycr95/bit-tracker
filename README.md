@@ -1,27 +1,52 @@
-# BitTracker
+# BitTracker - A Bitcoin Tracker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.14.
+BitTracker es una aplicación para visualizar el precio diario del Bitcoin y en diferentes divisas, construida con Angular, Electron y RxDB.
 
-## Development server
+## Descripción
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+BitTracker permite a los usuarios:
 
-## Code scaffolding
+- Visualizar el precio del Bitcoin en tiempo real.
+- Consultar el precio de cierre de los últimos 10 días.
+- Observar el porcentaje de variación respecto al precio actual.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Capturas
 
-## Build
+## Instalación
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Para instalar las dependencias del proyecto, ejecuta el siguiente comando:
 
-## Running unit tests
+```bash
+yarn
+# o
+npm install
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Uso
 
-## Running end-to-end tests
+Para ejecutar la aplicación en modo desarrollo, utiliza el siguiente comando:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+yarn run electron
+```
 
-## Further help
+Para empaquetar la aplicación y generar un ejecutable, ejecuta:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+yarn make
+```
+
+El ejecutable se generará en la carpeta `out` en la raíz del proyecto.
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para obtener más detalles.
+
+---
+
+Este README incluye toda la información esencial sobre tu proyecto BitTracker. Puedes copiar este texto y colocarlo en tu archivo `README.md` en GitHub. Si necesitas más ajustes o agregar algún detalle adicional, házmelo saber.
+
+## Screenshots
+
+![App Screenshot](./screenshots/cap-1.png)
+![App Screenshot](./screenshots/cap-2.png)![App Screenshot](./screenshots/cap-3.png)
